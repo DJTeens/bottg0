@@ -1,0 +1,14 @@
+[Unit]
+Description=Telegram Bot
+After=network.target
+
+[Service]
+User=makhmud
+Group=makhmud
+
+WorkingDirectory=/home/makhmud/bottg2/
+Environment="PYTHONPATH=/home/makhmud/bottg2/"
+ExecStart=/home/makhmud/bottg2/.venv/bin/python /home/makhmud/bottg2/ubuntu18/main.py
+
+[Install]
+WantedBy=multi-user.target
