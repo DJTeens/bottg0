@@ -1,12 +1,19 @@
 print("Запускаем бота....")
 from pyrogram import Client, filters
 from pendulum import now
+try:
+	from speedtest import Speedtest
+except:
+	import os
+	os.system("pip install speedtest-cli")
+	from speedtest import Speedtest
 with open("privetdict.txt", "r", encoding="utf-8") as file:
     try:
         privetdict = dict(eval(file.read()))
     except Exception as e:
         privetdict = {}
 bot = Client("bot", api_id=20204392, api_hash="205301a174955988a8b1558551f111fa")
+st = Speedtest()
 @bot.on_message(filters.me & filters.command(["инфо", "info"], ["/", "."]))
 async def info(_, message):
     if message.reply_to_message:
@@ -85,5 +92,12 @@ async def vremya(_, message):
         if newTime != ":".join(str(now()).split("T")[1].split(":")[:2]):
             await bot.update_profile(newTime)
             oldTime = ":".join(str(now()).split("T")[1].split(":")[:2])
+@bot.on_message(filters.me & filters.command("интернет", ["/", "."]))
+async def internet(_, message):
+	await message.edit("Загрузка....")
+	mb = round(st.download()/1000000, 2)
+	st.get_best_server()         
+	ping = round(st.results.ping, 2)
+	await message.edit(f"Скорость >> {mb} мегабайт в секунду\nПинг: {ping}")
 print("Бот запущен!")
 bot.run()
