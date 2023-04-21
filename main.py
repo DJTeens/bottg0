@@ -102,7 +102,7 @@ async def internet(_, message):
 	await message.edit(f"Скорость: {mb} мегабайт в секунду\nПинг: {ping}")
 @bot.on_message(filters.me & filters.command(['новыйспам', "newspam"], ['.', "/"]))
 def newspam(_, message):
-    await message.delete()
+    message.delete()
     res = message.command
     res.remove(res[0])
     counts = int(res.pop(0))
