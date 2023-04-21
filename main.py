@@ -1,6 +1,7 @@
 print("Запускаем бота....")
 from pyrogram import Client, filters
 from pendulum import now
+from threading import Thread
 try:
 	from speedtest import Speedtest
 except:
@@ -34,11 +35,11 @@ async def gifid(_, message):
         await message.edit("Не обнаружено гиф или изображение!")
 @bot.on_message(filters.me & filters.command(["спам", "spam"], [".", "/"]))
 async def spam(_, message):
+    await message.delete()
     res = message.command
     res.remove(res[0])
     counts = int(res.pop(0))
     text = " ".join(res)
-    await message.delete()
     count = 0
     while count != counts:
         count += 1
@@ -92,12 +93,23 @@ async def vremya(_, message):
         if newTime != ":".join(str(now()).split("T")[1].split(":")[:2]):
             await bot.update_profile(newTime)
             oldTime = ":".join(str(now()).split("T")[1].split(":")[:2])
-@bot.on_message(filters.me & filters.command("интернет", ["/", "."]))
+@bot.on_message(filters.me & filters.command(["пинг", "ping"], ["/", "."]))
 async def internet(_, message):
 	await message.edit("Загрузка....")
 	mb = round(st.download()/1000000, 2)
 	st.get_best_server()         
 	ping = round(st.results.ping, 2)
-	await message.edit(f"Скорость >> {mb} мегабайт в секунду\nПинг: {ping}")
+	await message.edit(f"Скорость: {mb} мегабайт в секунду\nПинг: {ping}")
+@bot.on_message(filters.me & filters.command(['новыйспам', "newspam"], ['.', "/"]))
+def newspam(_, message):
+    await message.delete()
+    res = message.command
+    res.remove(res[0])
+    counts = int(res.pop(0))
+    text = " ".join(res)
+    count = 0
+    while count != counts:
+        count += 1
+        Thread(target=message.reply, args=(text,)).start()
 print("Бот запущен!")
 bot.run()
