@@ -28,7 +28,7 @@ with open("privetdict.txt", "w+", encoding="utf-8") as file:
         privetdict = dict(eval(file.read()))
     except Exception as e:
         privetdict = {}
-bot = Client("bot", api_id=14998650, api_hash="fb31c538a8c3bf049b0c13f56dceb53b")
+bot = Client("bot", api_id=20204392, api_hash="205301a174955988a8b1558551f111fa")
 st = Speedtest()
 
 
