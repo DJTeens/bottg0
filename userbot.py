@@ -29,7 +29,7 @@ with open("privetdict.txt", "w+", encoding="utf-8") as file:
         privetdict = dict(eval(file.read()))
     except Exception as e:
         privetdict = {}
-bot = Client("bot", api_id=14998650, api_hash="fb31c538a8c3bf049b0c13f56dceb53b")
+bot = Client("bot", api_id=20204392, api_hash="205301a174955988a8b1558551f111fa")
 st = Speedtest()
 
 
@@ -56,7 +56,9 @@ async def gifid(_, message):
     elif message.reply_to_message.voice:
         await message.edit(message.reply_to_message.voice.file_id)   
     elif message.reply_to_message.video_note:
-        await message.edit(message.reply_to_message.video_note.file_id)             
+        await message.edit(message.reply_to_message.video_note.file_id)
+    elif message.reply_to_message.document:
+        await message.edit(message.reply_to_message.document.file_id)  
     else:
         await message.edit("Не обнаружено гиф или изображение или стикер или видео!")
 
@@ -248,6 +250,34 @@ async def spamkr(_, message):
     fileid = res[0]
     for i in range(counts):
         await message.reply_video_note(fileid, False)
+
+@bot.on_message(filters.me & filters.command(["ультраспамдок", "ultraspamdok"], ["/", "."]))
+async def ultrar(_, message):
+    await message.delete()
+    res = message.command
+    res.remove(res[0])
+    counts = int(res.pop(0))
+    fileid = res[0]
+    gather(*[message.reply_document(fileid, False) for i in range(counts)])
+
+@bot.on_message(filters.me & filters.command(["спамдок", "spamdok"], ["/", "."]))
+async def spamkr(_, message):
+    await message.delete()
+    res = message.command
+    res.remove(res[0])
+    counts = int(res.pop(0))
+    fileid = res[0]
+    for i in range(counts):
+        await message.reply_document(fileid, False)
+
+@bot.on_message(filters.me & filters.command(["ультраспамгео", "ultraspamgeo"], ["/", "."]))
+async def ultrar(_, message):
+    await message.delete()
+    res = message.command
+    res.remove(res[0])
+    counts = int(res.pop(0))
+    fileid = res[0]
+    gather(*[message.reply_venue(random.randint(-90, 90), random.randint(-180, 180), fileid, '') for i in range(counts)])
 
 print("Бот запущен!")
 bot.run()
